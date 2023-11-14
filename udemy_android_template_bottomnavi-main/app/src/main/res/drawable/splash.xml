@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/white"/> <!--배경을 하얗게 만들어주고-->
+    <item> <!--미리 받아온 플로 로고 이미지를 받아오기위해 item하나 더 만들어주고-->
+        <bitmap android:src="@drawable/ic_flo_logo" android:gravity="center"/>
+    </item>
+
+</layer-list>
