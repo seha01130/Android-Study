@@ -6,12 +6,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flo.databinding.ActivitySignupBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 //import retrofit2.Call
 //import retrofit2.Callback
 //import retrofit2.Response
 //import retrofit2.Retrofit
 
-class SignUpActivity : AppCompatActivity() /*,SignUpView*/{
+class SignUpActivity : AppCompatActivity() ,SignUpView{
 
     lateinit var binding: ActivitySignupBinding
 
@@ -22,7 +26,7 @@ class SignUpActivity : AppCompatActivity() /*,SignUpView*/{
 
         binding.signUpSignUpBtn.setOnClickListener {
             signUp()
-            finish() //로그인화면으로 이동하면서 LoginActivity가 켜질수있게 됨 (LoginActivity에서 SignupActivity를 호출)
+//            finish() //로그인화면으로 이동하면서 LoginActivity가 켜질수있게 됨 (LoginActivity에서 SignupActivity를 호출)
         }
     }
 
@@ -36,31 +40,9 @@ class SignUpActivity : AppCompatActivity() /*,SignUpView*/{
         return User(email, pwd, name)
     }
 
-    //회원가입 진행
-    private fun signUp() {
-        if (binding.signUpIdEt.text.toString().isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()) {
-            Toast.makeText(this, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (binding.signUpPasswordEt.text.toString() != binding.signUpPasswordCheckEt.text.toString()) {
-            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        //정보 DB 저장
-        val userDB = SongDatabase.getInstance(this)!!
-        userDB.userDao().insert(getUser())
-
-        val users = userDB.userDao().getUsers()
-
-        Log.d("SIGNUPACT", users.toString())
-    }
-
+    //회원가입 진행 //ROOMDB
 //    private fun signUp() {
-//        if (binding.signUpIdEt.text.toString()
-//                .isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()
-//        ) {
+//        if (binding.signUpIdEt.text.toString().isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()) {
 //            Toast.makeText(this, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
 //            return
 //        }
@@ -70,15 +52,33 @@ class SignUpActivity : AppCompatActivity() /*,SignUpView*/{
 //            return
 //        }
 //
-//        val authService = AuthService()
-//        authService.setSignUpView(this)
+//        //정보 DB 저장
+//        val userDB = SongDatabase.getInstance(this)!!
+//        userDB.userDao().insert(getUser())
 //
-//        authService.signUp(getUser())
+//        val users = userDB.userDao().getUsers()
+//
+//        Log.d("SIGNUPACT", users.toString())
+//    }
 
-        //val authService = getRetrofit().create(AuthRetrofitInterface::class.java)
+    //회원가입 진행 //네트워크를 통한 회원가입. Retrofit공식문서 보면서 진행
+    private fun signUp() {
+        if (binding.signUpIdEt.text.toString().isEmpty() || binding.signUpDirectInputEt.text.toString().isEmpty()) {
+            Toast.makeText(this, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        if (binding.signUpNameEt.text.toString().isEmpty()) {
+            Toast.makeText(this, "이름 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        if (binding.signUpPasswordEt.text.toString() != binding.signUpPasswordCheckEt.text.toString()) {
+            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+//        val authService = getRetrofit().create(AuthRetrofitInterface::class.java)
 //        authService.signUp(getUser()).enqueue(object: Callback<AuthResponse>{
 //            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
 //                Log.d("SIGNUP-ACT/RESPONSE", response.toString())
@@ -103,13 +103,17 @@ class SignUpActivity : AppCompatActivity() /*,SignUpView*/{
 //        })
 //
 //        Log.d("SIGNUP-ACT/ASYNC", "Hello, FLO")
-//    }
-//
-//    override fun onSignUpSuccess() {
-//        finish()
-//    }
-//
-//    override fun onSignUpFailure() {
-//        //실패처리
-//    }
+
+        val authService = AuthService()
+        authService.setSignUpView(this)
+        authService.signUp(getUser())
+    }
+
+    override fun onSignUpSuccess() {
+        finish()
+    }
+
+    override fun onSignUpFailure() {
+        //실패처리
+    }
 }

@@ -11,7 +11,7 @@ import com.example.flo.databinding.FragmentLookBinding
 
 class LookFragment : Fragment(), LookView {
     private lateinit var binding: FragmentLookBinding
-//    private lateinit var floCharAdapter: SongRVAdapter
+    private lateinit var floCharAdapter: SongRVAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,33 +23,33 @@ class LookFragment : Fragment(), LookView {
         return binding.root
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        getSongs()
-//    }
-//
-//    private fun initRecyclerView()/*(result: FloChartResult)*/ {
-//        floCharAdapter = SongRVAdapter(requireContext()/*, result*/)
-//
-//        binding.lookFloChartRv.adapter = floCharAdapter
-//    }
+    override fun onStart() {
+        super.onStart()
+        getSongs()
+    }
 
-//    private fun getSongs() {
-//        val songService = SongService()
-//        songService.setLookView(this)
-//
-//        songService.getSongs()
-//
-//    }
+    private fun initRecyclerView(result: FloChartResult) {
+        floCharAdapter = SongRVAdapter(requireContext(), result)
+
+        binding.lookFloChartRv.adapter = floCharAdapter
+    }
+
+    private fun getSongs() {
+        val songService = SongService()
+        songService.setLookView(this)
+
+        songService.getSongs()
+
+    }
 
     override fun onGetSongLoading() {
         binding.lookLoadingPb.visibility = View.VISIBLE
     }
 
-//    override fun onGetSongSuccess(code: Int, result: FloChartResult) {
-//        binding.lookLoadingPb.visibility = View.GONE
-//        initRecyclerView(result)
-//    }
+    override fun onGetSongSuccess(code: Int, result: FloChartResult) {
+        binding.lookLoadingPb.visibility = View.GONE
+        initRecyclerView(result)
+    }
 
     override fun onGetSongFailure(code: Int, message: String) {
         binding.lookLoadingPb.visibility = View.GONE
