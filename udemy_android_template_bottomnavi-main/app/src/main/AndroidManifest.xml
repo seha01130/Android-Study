@@ -15,7 +15,7 @@
         <!-- intent-filter의 역할. 이 구성요소의 역할을 지정할 수 있음. 지금은 MainActivity가 시작과 동시에 맨 앞에 보이기때문에
     이 intent-filter로 화면이 시작하자마자 보여질화면이야 라고 지정해준거임.-->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"> <!-- MainActivity에 Splash테마 적용시키기 -->
             <intent-filter>
@@ -25,11 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SongActivity"
+            android:name=".ui.song.SongActivity"
             android:exported="true"/>
-<!--        <activity android:name="com.example.flo.SongActivity"/>-->
-        <activity android:name="com.example.flo.LoginActivity"/>
-        <activity android:name="com.example.flo.SignUpActivity"/>
+<!--        <activity android:name="com.example.flo.ui.song.SongActivity"/>-->
+        <activity android:name="com.example.flo.ui.signin.LoginActivity"/>
+        <activity android:name="com.example.flo.ui.signup.SignUpActivity"/>
     </application>
 
 </manifest>
